@@ -42,6 +42,7 @@ import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityLinkData;
 import org.cloudburstmc.protocol.bedrock.data.inventory.ItemData;
 import org.cloudburstmc.protocol.bedrock.packet.AddPlayerPacket;
+import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket;
 import org.cloudburstmc.protocol.bedrock.packet.SetEntityLinkPacket;
 import org.cloudburstmc.protocol.bedrock.packet.UpdateAttributesPacket;
@@ -191,16 +192,17 @@ public class PlayerEntity extends LivingEntity implements GeyserPlayerEntity {
 
         setOnGround(isOnGround);
 
-        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        // MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        MoveEntityAbsolutePacket movePlayerPacket = new MoveEntityAbsolutePacket();
         movePlayerPacket.setRuntimeEntityId(geyserId);
         movePlayerPacket.setPosition(this.position);
         movePlayerPacket.setRotation(getBedrockRotation());
+        movePlayerPacket.setTeleported(teleported);
         movePlayerPacket.setOnGround(isOnGround);
-        movePlayerPacket.setMode(teleported ? MovePlayerPacket.Mode.TELEPORT : MovePlayerPacket.Mode.NORMAL);
 
-        if (teleported) {
-            movePlayerPacket.setTeleportationCause(MovePlayerPacket.TeleportationCause.UNKNOWN);
-        }
+        // if (teleported) {
+        //     movePlayerPacket.setTeleportationCause(MovePlayerPacket.TeleportationCause.UNKNOWN);
+        // }
 
         session.sendUpstreamPacket(movePlayerPacket);
 
@@ -226,20 +228,22 @@ public class PlayerEntity extends LivingEntity implements GeyserPlayerEntity {
 
         setOnGround(isOnGround);
 
-        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        // MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        MoveEntityAbsolutePacket movePlayerPacket = new MoveEntityAbsolutePacket();
         movePlayerPacket.setRuntimeEntityId(geyserId);
         movePlayerPacket.setPosition(position);
         movePlayerPacket.setRotation(getBedrockRotation());
         movePlayerPacket.setOnGround(isOnGround);
-        movePlayerPacket.setMode(MovePlayerPacket.Mode.NORMAL);
+        // movePlayerPacket.setMode(MovePlayerPacket.Mode.NORMAL);
         // If the player is moved while sleeping, we have to adjust their y, so it appears
         // correctly on Bedrock. This fixes GSit's lay.
         if (getFlag(EntityFlag.SLEEPING)) {
             if (bedPosition != null && (bedPosition.getY() == 0 || bedPosition.distanceSquared(position.toInt()) > 4)) {
                 // Force the player movement by using a teleport
                 movePlayerPacket.setPosition(Vector3f.from(position.getX(), position.getY() - definition.offset() + 0.2f, position.getZ()));
-                movePlayerPacket.setMode(MovePlayerPacket.Mode.TELEPORT);
-                movePlayerPacket.setTeleportationCause(MovePlayerPacket.TeleportationCause.UNKNOWN);
+                // movePlayerPacket.setMode(MovePlayerPacket.Mode.TELEPORT);
+                movePlayerPacket.setTeleported(true);
+                // movePlayerPacket.setTeleportationCause(MovePlayerPacket.TeleportationCause.UNKNOWN);
             }
         }
         session.sendUpstreamPacket(movePlayerPacket);

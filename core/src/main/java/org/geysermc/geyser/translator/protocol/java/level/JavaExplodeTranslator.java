@@ -71,7 +71,7 @@ public class JavaExplodeTranslator extends PacketTranslator<ClientboundExplodePa
             SetEntityMotionPacket motionPacket = new SetEntityMotionPacket();
             motionPacket.setRuntimeEntityId(session.getPlayerEntity().getGeyserId());
             motionPacket.setMotion(packet.getPlayerKnockback().toFloat());
-            session.sendUpstreamPacket(motionPacket);
+            session.sendUpstreamPacketImmediately(motionPacket);
         }
     }
 }

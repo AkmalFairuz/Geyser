@@ -61,6 +61,6 @@ public class JavaSetEntityMotionTranslator extends PacketTranslator<ClientboundS
         entityMotionPacket.setRuntimeEntityId(entity.getGeyserId());
         entityMotionPacket.setMotion(entity.getMotion());
 
-        session.sendUpstreamPacket(entityMotionPacket);
+        session.sendUpstreamPacketImmediately(entityMotionPacket);
     }
 }

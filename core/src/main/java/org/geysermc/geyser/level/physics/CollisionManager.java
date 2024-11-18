@@ -34,6 +34,7 @@ import org.cloudburstmc.math.vector.Vector3d;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.math.vector.Vector3i;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityFlag;
+import org.cloudburstmc.protocol.bedrock.packet.MoveEntityAbsolutePacket;
 import org.cloudburstmc.protocol.bedrock.packet.MovePlayerPacket;
 import org.geysermc.erosion.util.BlockPositionIterator;
 import org.geysermc.geyser.entity.EntityDefinitions;
@@ -223,11 +224,12 @@ public class CollisionManager {
         // Gravity might need to be reset...
         entity.updateBedrockMetadata(); // TODO may not be necessary
 
-        MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        // MovePlayerPacket movePlayerPacket = new MovePlayerPacket();
+        MoveEntityAbsolutePacket movePlayerPacket = new MoveEntityAbsolutePacket();
         movePlayerPacket.setRuntimeEntityId(entity.getGeyserId());
         movePlayerPacket.setPosition(entity.getPosition());
         movePlayerPacket.setRotation(entity.getBedrockRotation());
-        movePlayerPacket.setMode(MovePlayerPacket.Mode.NORMAL);
+        // movePlayerPacket.setMode(MovePlayerPacket.Mode.NORMAL);
         session.sendUpstreamPacket(movePlayerPacket);
     }
 
